@@ -40,6 +40,7 @@ const getRegistrations = async (req, res) => {
         { playerLastName: { $regex: search, $options: 'i' } },
         { teamName: { $regex: search, $options: 'i' } },
         { mobileNumber: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
         { academyClub: { $regex: search, $options: 'i' } }
       ];
     }
