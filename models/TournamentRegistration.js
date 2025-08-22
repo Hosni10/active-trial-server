@@ -129,3 +129,5 @@ tournamentRegistrationSchema.set('toJSON', { virtuals: true });
 tournamentRegistrationSchema.set('toObject', { virtuals: true });
 
 module.exports = mongoose.model('TournamentRegistration', tournamentRegistrationSchema);
+
+

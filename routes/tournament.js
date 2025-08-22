@@ -38,3 +38,5 @@ router.patch('/:id', validateTournamentRegistration, handleValidationErrors, upd
 router.delete('/:id', deleteRegistration);
 
 module.exports = router;
+
+
