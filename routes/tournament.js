@@ -40,3 +40,5 @@ router.delete('/:id', deleteRegistration);
 module.exports = router;
 
 
+
+
