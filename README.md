@@ -6,11 +6,13 @@ This is the backend server for the Atomics Football Trial registration system.
 
 - Tournament registration management
 - Player registration with validation
+- **Stripe payment integration with dynamic amounts**
 - Admin dashboard with statistics
 - RESTful API endpoints
 - MongoDB database integration
 - Input validation and sanitization
 - Rate limiting and security headers
+- Payment status tracking and webhooks
 
 ## Setup Instructions
 
@@ -34,6 +36,10 @@ MONGODB_URI=mongodb://localhost:27017/atomics-trial
 
 # Client URL for CORS
 CLIENT_URL=http://localhost:5173
+
+# Stripe Configuration
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key_here
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
 
 # Optional: MongoDB Atlas URI (if using cloud database)
 # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/atomics-trial?retryWrites=true&w=majority
@@ -64,8 +70,15 @@ npm start
 - `GET /api/tournament-registrations/stats` - Get statistics
 - `GET /api/tournament-registrations/:id` - Get registration by ID
 - `PUT /api/tournament-registrations/:id` - Update registration status
+- `PUT /api/tournament-registrations/:id/payment` - Update payment status
 - `PATCH /api/tournament-registrations/:id` - Update registration
 - `DELETE /api/tournament-registrations/:id` - Delete registration
+
+### Payment Endpoints
+
+- `POST /api/payments/create-payment-intent` - Create Stripe payment intent
+- `GET /api/payments/payment-status/:paymentIntentId` - Get payment status
+- `POST /api/payments/webhook` - Stripe webhook endpoint
 
 ### Query Parameters for GET /api/tournament-registrations
 
@@ -107,6 +120,12 @@ npm start
   // Status and Metadata
   status: String (enum: pending, confirmed, cancelled, default: pending),
   registrationDate: Date (default: now),
+  
+  // Payment Information
+  paymentAmount: Number (required, min 0),
+  paymentStatus: String (enum: pending, completed, failed, refunded, default: pending),
+  stripePaymentIntentId: String,
+  paymentDate: Date,
   
   // Additional fields
   notes: String,

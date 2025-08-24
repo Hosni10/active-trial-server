@@ -98,6 +98,25 @@ const tournamentRegistrationSchema = new mongoose.Schema({
     default: Date.now
   },
   
+  // Payment Information
+  paymentAmount: {
+    type: Number,
+    required: [true, 'Payment amount is required'],
+    min: [0, 'Payment amount must be non-negative']
+  },
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'completed', 'failed', 'refunded'],
+    default: 'pending'
+  },
+  stripePaymentIntentId: {
+    type: String,
+    trim: true
+  },
+  paymentDate: {
+    type: Date
+  },
+  
   // Additional fields for tracking
   notes: {
     type: String,

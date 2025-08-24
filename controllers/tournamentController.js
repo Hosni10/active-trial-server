@@ -195,6 +195,43 @@ const deleteRegistration = async (req, res) => {
   }
 };
 
+// Update payment status
+const updatePaymentStatus = async (req, res) => {
+  try {
+    const { paymentStatus, stripePaymentIntentId } = req.body;
+    
+    const registration = await TournamentRegistration.findByIdAndUpdate(
+      req.params.id,
+      { 
+        paymentStatus,
+        stripePaymentIntentId,
+        paymentDate: paymentStatus === 'completed' ? new Date() : null
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!registration) {
+      return res.status(404).json({
+        success: false,
+        message: 'Registration not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Payment status updated successfully',
+      data: registration
+    });
+  } catch (error) {
+    console.error('Error updating payment status:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update payment status',
+      error: error.message
+    });
+  }
+};
+
 // Get statistics
 const getStats = async (req, res) => {
   try {
@@ -203,12 +240,16 @@ const getStats = async (req, res) => {
       pendingRegistrations,
       confirmedRegistrations,
       cancelledRegistrations,
+      totalPayments,
+      completedPayments,
       registrationsByDate
     ] = await Promise.all([
       TournamentRegistration.countDocuments(),
       TournamentRegistration.countDocuments({ status: 'pending' }),
       TournamentRegistration.countDocuments({ status: 'confirmed' }),
       TournamentRegistration.countDocuments({ status: 'cancelled' }),
+      TournamentRegistration.countDocuments({ paymentStatus: { $exists: true } }),
+      TournamentRegistration.countDocuments({ paymentStatus: 'completed' }),
       TournamentRegistration.aggregate([
         {
           $group: {
@@ -230,7 +271,9 @@ const getStats = async (req, res) => {
           totalRegistrations,
           pendingRegistrations,
           confirmedRegistrations,
-          cancelledRegistrations
+          cancelledRegistrations,
+          totalPayments,
+          completedPayments
         },
         recentRegistrations: registrationsByDate
       }
@@ -252,6 +295,7 @@ module.exports = {
   updateRegistrationStatus,
   updateRegistration,
   deleteRegistration,
+  updatePaymentStatus,
   getStats
 };
 

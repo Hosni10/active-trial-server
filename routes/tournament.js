@@ -7,6 +7,7 @@ const {
   updateRegistrationStatus,
   updateRegistration,
   deleteRegistration,
+  updatePaymentStatus,
   getStats
 } = require('../controllers/tournamentController');
 
@@ -33,6 +34,9 @@ router.put('/:id', validateStatusUpdate, handleValidationErrors, updateRegistrat
 
 // PATCH /api/tournament-registrations/:id - Update registration (full update)
 router.patch('/:id', validateTournamentRegistration, handleValidationErrors, updateRegistration);
+
+// PUT /api/tournament-registrations/:id/payment - Update payment status
+router.put('/:id/payment', updatePaymentStatus);
 
 // DELETE /api/tournament-registrations/:id - Delete registration
 router.delete('/:id', deleteRegistration);

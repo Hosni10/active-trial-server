@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 5000;
 
 // Import routes
 const tournamentRoutes = require('./routes/tournament');
+const paymentRoutes = require('./routes/payment');
 
 // Middleware
 app.use(helmet());
@@ -19,6 +20,11 @@ app.use(cors({
   credentials: true
 }));
 app.use(morgan('combined'));
+
+// Special handling for Stripe webhooks (raw body)
+app.use('/api/payments/webhook', express.raw({ type: 'application/json' }));
+
+// Regular JSON parsing for other routes
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
@@ -41,6 +47,7 @@ app.get('/health', (req, res) => {
 
 // API routes
 app.use('/api/tournament-registrations', tournamentRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
@@ -61,10 +68,7 @@ app.use((err, req, res, next) => {
 });
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/atomics-trial', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_URI)
 .then(() => {
   console.log('Connected to MongoDB');
   app.listen(PORT, () => {
