@@ -28,6 +28,10 @@ const tournamentRegistrationSchema = new mongoose.Schema({
     required: [true, 'Playing position is required'],
     enum: ['GK', 'CB', 'RB', 'LB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST']
   },
+  playingPositions: [{
+    type: String,
+    enum: ['GK', 'CB', 'RB', 'LB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST']
+  }],
   divisionLastSeason: {
     type: String,
     required: [true, 'Division competed at last season is required'],

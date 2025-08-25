@@ -25,6 +25,16 @@ const validateTournamentRegistration = [
     .isIn(['GK', 'CB', 'RB', 'LB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST'])
     .withMessage('Valid playing position is required'),
   
+  body('playingPositions')
+    .optional()
+    .isArray({ min: 1 })
+    .withMessage('At least one playing position is required'),
+  
+  body('playingPositions.*')
+    .optional()
+    .isIn(['GK', 'CB', 'RB', 'LB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST'])
+    .withMessage('Valid playing position is required'),
+  
   body('divisionLastSeason')
     .trim()
     .notEmpty()
