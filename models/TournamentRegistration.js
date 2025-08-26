@@ -14,22 +14,21 @@ const tournamentRegistrationSchema = new mongoose.Schema({
     trim: true,
     minlength: [2, 'Last name must be at least 2 characters']
   },
-  teamName: {
-    type: String,
-    required: [true, 'Team name is required'],
-    trim: true
-  },
+
   dateOfBirth: {
     type: Date,
     required: [true, 'Date of birth is required']
   },
-  playingPosition: {
+
+  gender: {
     type: String,
-    required: [true, 'Playing position is required'],
-    enum: ['GK', 'CB', 'RB', 'LB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST']
+    required: [true, 'Gender is required'],
+    enum: ['male', 'female']
   },
+
   playingPositions: [{
     type: String,
+    required: [true, 'Playing position is required'],
     enum: ['GK', 'CB', 'RB', 'LB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST']
   }],
   divisionLastSeason: {

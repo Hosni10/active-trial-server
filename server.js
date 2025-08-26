@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 5000;
 // Import routes
 const tournamentRoutes = require('./routes/tournament');
 const paymentRoutes = require('./routes/payment');
+const academyRoutes = require('./routes/academy');
 
 // Middleware
 app.use(helmet());
@@ -48,6 +49,7 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/tournament-registrations', tournamentRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/academy-registrations', academyRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {

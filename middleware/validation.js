@@ -12,18 +12,10 @@ const validateTournamentRegistration = [
     .isLength({ min: 2 })
     .withMessage('Player last name must be at least 2 characters long'),
   
-  body('teamName')
-    .trim()
-    .notEmpty()
-    .withMessage('Team name is required'),
   
   body('dateOfBirth')
     .isISO8601()
     .withMessage('Valid date of birth is required'),
-  
-  body('playingPosition')
-    .isIn(['GK', 'CB', 'RB', 'LB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST'])
-    .withMessage('Valid playing position is required'),
   
   body('playingPositions')
     .optional()
