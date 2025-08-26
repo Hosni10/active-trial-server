@@ -27,10 +27,13 @@ const validateTournamentRegistration = [
     .isIn(['GK', 'CB', 'RB', 'LB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST'])
     .withMessage('Valid playing position is required'),
   
-  body('divisionLastSeason')
-    .trim()
+  body('selectedTeams')
+    .isArray({ min: 1, max: 2 })
+    .withMessage('You must select between 1 and 2 teams'),
+  
+  body('selectedTeams.*')
     .notEmpty()
-    .withMessage('Division competed at last season is required'),
+    .withMessage('Valid team selection is required'),
   
   body('strengthWeakness')
     .trim()

@@ -18,7 +18,7 @@ const validateAcademyRegistration = (req, res, next) => {
     playerLastName,
     dateOfBirth,
     playingPositions,
-    divisionLastSeason,
+    selectedTeams,
     mobileNumber,
     email,
     academyClub,
@@ -48,8 +48,10 @@ const validateAcademyRegistration = (req, res, next) => {
     errors.push('At least one playing position is required');
   }
 
-  if (!divisionLastSeason || divisionLastSeason.trim().length === 0) {
-    errors.push('Division competed at last season is required');
+  if (!selectedTeams || !Array.isArray(selectedTeams) || selectedTeams.length === 0) {
+    errors.push('At least one team selection is required');
+  } else if (selectedTeams.length > 2) {
+    errors.push('You can select a maximum of 2 teams');
   }
 
   if (!mobileNumber || mobileNumber.trim().length === 0) {

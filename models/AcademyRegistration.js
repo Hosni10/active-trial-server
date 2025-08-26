@@ -32,11 +32,16 @@ const academyRegistrationSchema = new mongoose.Schema({
     enum: ['GK', 'CB', 'RB', 'LB', 'CDM', 'CM', 'CAM', 'LW', 'RW', 'ST']
   }],
   
-  divisionLastSeason: {
+  selectedTeams: [{
     type: String,
-    required: [true, 'Division competed at last season is required'],
-    trim: true
-  },
+    required: [true, 'At least one team selection is required'],
+    validate: {
+      validator: function(teams) {
+        return teams.length > 0 && teams.length <= 2;
+      },
+      message: 'You must select between 1 and 2 teams'
+    }
+  }],
 
   // Contact Information
   mobileNumber: {
